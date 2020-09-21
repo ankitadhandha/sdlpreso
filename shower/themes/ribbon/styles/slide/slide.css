@@ -47,11 +47,11 @@
 .slide::after {
     position: absolute;
     top: 0;
-    left: 875px;
+    left: 975px;
     box-sizing: border-box;
-    padding-top: 15px;
+    /*padding-top: 15px;*/
     width: var(--ribbon-size);
-    height: calc(var(--ribbon-size) * 2);
+    /*height: calc(var(--ribbon-size) * 2);*/
     background-image: url('ribbon.svg');
     background-size: cover;
     color: white;

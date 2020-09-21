@@ -2,7 +2,7 @@
 
 .shower.full {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     overflow: hidden;
     margin-top: calc(var(--slide-height) / 2 * -1);
