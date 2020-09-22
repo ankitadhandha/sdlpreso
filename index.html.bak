@@ -56,10 +56,12 @@
         <ol>
             <li>SDL Proposed Design improvements</li>
 			<li>How we acheived new SDL Design</li>
-            <li>SDL processes but other tools do not. Need of SDL</li>
-            <li>Monster files which we processed on our AWS EC2 server</li>
-            <li>AWS Lambda SDL version which processes short data</li>
-            <li>More improvements from this feedback</li>
+            <li>SDL use case-1</li>
+			<li>SDL use case-2</li>
+            <li>NALT file processed by SDL</li>
+            <li>NCIT file processed by SDL</li>
+            <li>SDL service from AWS Spot server</li>
+			<li>Feedback</li>
         </ol>
         <p class="note"></p>
     </section>
@@ -85,37 +87,52 @@
     </section>
 
     <section class="slide">
-		<figure>
-			<img class="cover" src="pictures/sdl_first_use_case.jpg">
-		</figure><br><br><br><br><br><br><br><br><br>
-		<ul style="font-size:21px;left-margin:0px;"><li><a href="https://gist.github.com/ankitadhandha/87bb20ef14638683d5712f270a7886a2#file-case1-txt">This file</a> is getting validated by GSDTT but not by RRT.
-		Graph is invisible as it is very large file.</li>
-		<li><a href="pictures/Structured Data Linter.html">Here</a> is output of above gist file from SDL.</a></li></ul>
+	<h2 style="text-align:center;text-decoration: underline;">use case - 1</h2>
+	<ul style="font-size:18px;"><li><a href="https://afdsi.com/sdl/language/language-graph.json" target="_blank">Click here</a> to view source code.
+	This source code has @class and is validated by GSDTT but not by RRT.</li>
+	<li>To validate in GSDTT, <a href="https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fafdsi.com%2Fsdl%2Flanguage%2Flanguage-graph.json" target="_blank">Click Here</a></li>
+	<li>To validate in json-ld playground, <a href="https://json-ld.org/playground/#startTab=tab-expanded&json-ld=https%3A%2F%2Fafdsi.com%2Fsdl%2Forganization%2Forganization-graph.json" target="_blank">Click Here</a></li>
+	<li>To view SDL output, please <a href="pictures/case-1/Structured Data Linter.html" targe="_blank">Click Here</a>.
+	</ul>
     </section>
 
-
 	<section class="slide">
-		<figure>
-			<img class="cover" src="pictures/sdl_second_use_case.jpg">
-		</figure><br><br><br><br><br><br><br><br>
-		<ul><li><a href="https://gist.github.com/ankitadhandha/d36e0e5450942519c2c8abc349d2a363#file-case2-txt">This file</a> is the second use case and is validated by GSDTT and RRT both.</li>
-		<li><a href="">Here</a> is output of above gist file from SDL.</a></li></ul>
+	<h2 style="text-align:center;text-decoration:underline;">use case - 2</h2>
+	<ul style="font-size:18px;"><li><a href="https://afdsi.com/sdl/organization/organization-graph.json" target="_blank">Click here</a> to view source code.
+	This source code has @class and is validated by both GSDTT and RRT.</li>
+	<li>To validate in GSDTT, <a href="https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fafdsi.com%2Fsdl%2Forganization%2Forganization-graph.json" target="_blank">Click Here</a></li>
+	<li>To validate in json-ld playgraound, <a href="https://json-ld.org/playground/#startTab=tab-expanded&json-ld=https%3A%2F%2Fafdsi.com%2Fsdl%2Forganization%2Forganization-graph.json" target="_blank">Click Here</a></li>
+	<li>To view SDL output, please <a href="pictures/case-2/Structured Data Linter.html" target="_blank">Click Here</a>.
 	</section>
 
 	<section class="slide">
-		<figure><img class="cover" src="picture/monster.jpg"></figure>
-		<ul><li><a href="">This file</a> is file processed by SDL which contains more than 500k statements.</li>
-		<li>We used AWS high end spot server to process these many statements.</li>
-		</ul></figure>
-		
+		<figure><img class="cover" src="pictures/monster-1.jpg"></figure><br><br><br><br><br><br><br><br><br>
+		<ul style="font-size:14px;margin-left: 18px;">
+		<li><a href="https://afdsi.com/sdl/nalt/data.json">Click Here</a> to view source code. SDL processed 500k triples as shown in above image.</li>
+		<li>To view these processed triples <a href="https://afdsi.com/sdl/nalt/index.html">Click Here</a>.</li>
+		<li>Please note that we used AWS high end spot server to process this much bigger file.</li>
+		<li>We also made minor changes to upload .zip file as it can not proceess normal file.</li>
+		</ul>
 	</section>
-		
+
 	<section class="slide">
-	<ul><li>We have deployed SDL on AWS Lambda with few limitations.</li>
-	<li>You can run SDL from <a href="https://5hw2bg5kz3.execute-api.us-east-1.amazonaws.com/Prod">here</a></li>
-	<li>AWS Lambda only supports Deployment unzipped size of 250 MB.</li>
-	<li>API Gateway Endpoint timeout is 29 seconds. So It can only process small amount of data.</li>
-	</ul>
+		<figure><img class="cover" src="pictures/monster-2.jpg"></figure><br><br><br><br><br><br><br><br><br>
+		<ul style="font-size:14px;margin-left: 18px;">
+		<li><a href="https://afdsi.com/sdl/ncit/data.json">Click Here</a> to view source code. SDL processed 900l triples as shown in above image.</li>
+		<li>To view these processed triples <a href="https://afdsi.com/sdl/ncit/index.html">Click Here</a>.</li>
+		<li>Please note that we used AWS high end spot server to process this much bigger file.</li>
+		<li>We also made minor changes to upload .zip file as it can not proceess normal file.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h1>SDL as a service on AWS Lambda</h1>
+		<ul style="font-size:14px;"><li>We have deployed SDL as a Service on AWS Lambda. To view our Lambda version, please <a href="https://5hw2bg5kz3.execute-api.us-east-1.amazonaws.com/Prod">Click Here</a></li>
+		<li>SDL deployment with AWS Lambda has few limitations:
+		<li>AWS Lambda supports only deployment unzipped size of 250 MB, whereas our SDL software size is >333MB. We remove few unwanted examples, directories and make it to fit in lambda deployment.</li>
+		<li>API Gateway Endpoint timeout is 29 seconds. After 29 seconds, it time out that means it listens to Lambda response only upto 29 seconds. It can process small amount of data currently.</li>
+		</li>
+		</ul>
 	</section>
 
 	<section class="slide">
