@@ -1,0 +1,1362 @@
+
+<!-- saved from url=(0027)http://54.157.130.220:5000/ -->
+<html lang="en" ng-app="linterApp" class="ng-scope"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Structured Data Linter</title>
+    <link rel="stylesheet" href="./Structured Data Linter_files/application.css">
+    <link rel="stylesheet" href="./Structured Data Linter_files/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./Structured Data Linter_files/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script async="" src="./Structured Data Linter_files/analytics.js.download"></script><script src="./Structured Data Linter_files/jquery-3.2.1.slim.min.js.download" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+    <script src="./Structured Data Linter_files/bootstrap.min.js.download" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="./Structured Data Linter_files/angular.min.js.download"></script>
+<script src="./Structured Data Linter_files/angular-route.min.js.download"></script>
+<script src="./Structured Data Linter_files/angular-sanitize.min.js.download"></script>
+<link rel="stylesheet" href="./Structured Data Linter_files/snippet.css">
+<script src="./Structured Data Linter_files/angular-file-upload.js.download"></script>
+<script src="./Structured Data Linter_files/application.js.download"></script>
+<!--<base href="/">--><base href=".">
+
+
+    <script>
+      // Navigation
+      $(function () {
+        // Select appropriate nav tab
+        var href = window.location.pathname;
+        $('nav ul.nav ul.dropdown-menu a').removeClass('active');
+        $('nav ul.nav ul.dropdown-menu a[href="' + href + '"]').addClass('active');
+      });
+    </script>
+  </head>
+  <body class="linter" about="/" typeof="schema:SoftwareApplication cc:Work">
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle">
+            <span class="sr-only">Toggle Navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://54.157.130.220:5000/">Structured Data Linter</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="http://54.157.130.220:5000/examples/" target="_self">Examples</a></li>
+          <li class="dropdown">
+            <a href="http://54.157.130.220:5000/#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">More <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="http://54.157.130.220:5000/snippets/" target="_self">Snippet Definitions</a></li>
+              <li><a resource="/about/" href="http://54.157.130.220:5000/about/" target="_self" property="schema:softwareHelp">About</a></li>
+              <li><a href="https://github.com/structured-data/linter/releases/tag/3.9.0" target="_blank">Release Notes</a></li>
+              <li><a href="https://github.com/structured-data/linter/issues" target="_blank">Issue Tracker</a></li>
+            </ul>
+          </li>
+          <li><span class="vers" about="http://linter.strctured-data.org/" property="softwareVersion">3.9.0</span></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container-fluid" role="main">
+      <div ng-controller="LinterController" class="ng-scope">
+  <div class="lighter">
+    <p>
+      Enter a URL below to see what structured data your page contains. You can alternatively upload a local file or paste some markup.
+      Read more <a href="http://54.157.130.220:5000/about/" target="_self">about the Structured Data linter</a>.
+    </p>
+    <ul class="nav nav-tabs linter">
+      <li><a href="http://54.157.130.220:5000/" class="url" ng-class="getClass(&#39;url&#39;)" ng-click="fieldset = &#39;url&#39;">Lint by URL</a></li>
+      <li><a href="http://54.157.130.220:5000/" class="upload" ng-class="getClass(&#39;upload&#39;)" ng-click="fieldset = &#39;upload&#39;">Lint by File Upload</a></li>
+      <li><a href="http://54.157.130.220:5000/" class="input active" ng-class="getClass(&#39;input&#39;)" ng-click="fieldset = &#39;input&#39;">Lint by Direct Input</a></li>
+    </ul>
+    <form id="linter_input" class="ng-valid ng-dirty ng-valid-parse ng-submitted">
+      <fieldset class="input-group ng-hide" ng-show="fieldset === &#39;url&#39;">
+        <legend>Page URL</legend>
+        <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="text" size="80" ng-model="url">
+        <input type="submit" ng-click="lintUrl(url)" value="Submit" ng-disabled="fieldset !== &#39;url&#39;" disabled="disabled">
+        <fieldset>
+          <legend>Options</legend>
+          <label for="verify-ssl">Verify SSL</label>
+          <input id="verify-ssl" type="checkbox" ng-model="verifySSL" class="ng-pristine ng-untouched ng-valid ng-not-empty">
+        </fieldset>
+        <br>
+        <span class="form-examples">Examples:
+          Review (
+)
+          Person (
+            <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-1-rdfa.html&#39;)" title="Show Person snippet in RDFa">RDFa</a>
+                      <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-1-jsonld.html&#39;)" title="Show Person snippet in JSON-LD">JSON-LD</a>
+                      <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-1-microdata.html&#39;)" title="Show Person snippet in MD">MD</a>
+          )
+          Event (
+            <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-9-rdfa.html&#39;)" title="Show Event snippet in RDFa">RDFa</a>
+                      <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-9-jsonld.html&#39;)" title="Show Event snippet in JSON-LD">JSON-LD</a>
+                      <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-9-microdata.html&#39;)" title="Show Event snippet in MD">MD</a>
+          )
+          Recipe (
+            <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-13-rdfa.html&#39;)" title="Show Recipe snippet in RDFa">RDFa</a>
+                      <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-13-jsonld.html&#39;)" title="Show Recipe snippet in JSON-LD">JSON-LD</a>
+                      <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-13-microdata.html&#39;)" title="Show Recipe snippet in MD">MD</a>
+          )
+          Product (
+            <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-10-rdfa.html&#39;)" title="Show Product snippet in RDFa">RDFa</a>
+                      <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-10-jsonld.html&#39;)" title="Show Product snippet in JSON-LD">JSON-LD</a>
+                      <a href="http://54.157.130.220:5000/" ng-click="lintUrl(&#39;http://54.157.130.220:5000/examples/schema.org/eg-10-microdata.html&#39;)" title="Show Product snippet in MD">MD</a>
+          )
+        </span>
+      </fieldset>
+
+      <fieldset class="input-group ng-hide" ng-show="fieldset === &#39;upload&#39;">
+        <legend>File Upload</legend>
+        <!--div class="well my-drop-zone" uploader="uploader">
+          Drag-drop file to upload
+        </div -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width=&#39;50%&#39;">Name</th>
+              <th>Size</th>
+              <th>Progress</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+           <!-- ngRepeat: item in uploader.queue -->
+          </tbody>
+        </table>
+        <input type="file" nv-file-select="" uploader="uploader">
+      </fieldset>
+
+      <fieldset class="input-group" ng-show="fieldset === &#39;input&#39;">
+        <legend>Markup</legend>
+        <textarea class="input form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" cols="120" rows="15" ng-model="input"></textarea>
+        <input type="submit" ng-click="lintInput(input)" value="Submit" ng-disabled="fieldset !== &#39;input&#39;">
+      </fieldset>
+    </form>
+  </div>
+
+  <div ng-show="loading" class="ng-hide">
+    Loading results...
+  </div>
+
+  <div class="snippet" ng-show="result">
+    <h2>Enhanced search result preview</h2>
+    <p><em><small>Disclaimer: this preview is only shown as a example of what a search engine <strong>might</strong> display. It is to the discretion of each search engine provider to decide whether your page will be displayed as an enhanced search result or not in their search results pages.</small></em></p>
+    <p ng-show="!result.snippet" class="ng-hide">The data did not match any templates on file.
+      Submit a request to the <a href="http://groups.google.com/group/structured-data-dev">mailing list</a>
+      to request support for additional templates.</p>
+    <div ng-bind-html="result.snippet" class="ng-binding"><div class="results-content">
+<div class="snippet-content">
+<h3 class="r">
+<a class="fakelink">
+<span>US Department of Veterans Affairs</span>
+
+</a>
+</h3>
+<div class="s">
+<div class="f">
+<cite>example.org/</cite>
+</div>
+</div>
+<div class="s primary_content">
+<div class="f">
+
+</div>
+<div>
+an <strong>actual</strong> search result <strong>may</strong> display other content <strong>relating</strong> to your search terms here.
+</div>
+</div>
+<div class="other">
+<p>Content not used in snippet generation:</p>
+<span>US Department of Veterans Affairs</span>
+
+</div>
+</div>
+
+<div class="snippet-content">
+<h3 class="r">
+<a class="fakelink">
+<span>Massachusetts</span>
+
+</a>
+</h3>
+<div class="s">
+<div class="f">
+<cite>example.org/</cite>
+</div>
+</div>
+<div class="s primary_content">
+<div class="f">
+
+</div>
+<div>
+an <strong>actual</strong> search result <strong>may</strong> display other content <strong>relating</strong> to your search terms here.
+</div>
+</div>
+<div class="other">
+<p>Content not used in snippet generation:</p>
+<span>Massachusetts</span>
+
+</div>
+</div>
+
+<div class="snippet-content">
+<h3 class="r">
+<a class="fakelink">
+<span>VA Boston -- West Roxbury</span>
+
+</a>
+</h3>
+<div class="s">
+<div class="f">
+<cite>example.org/</cite>
+</div>
+</div>
+<div class="s primary_content">
+<div class="f">
+<span>
+<span>1400 VFW Parkway</span>, <span>West Roxbury</span>, <span>MA</span>, <span>02132</span>
+</span>
+<span class="other">
+</span>
+</div>
+<div>
+an <strong>actual</strong> search result <strong>may</strong> display other content <strong>relating</strong> to your search terms here.
+</div>
+</div>
+<div class="other">
+<p>Content not used in snippet generation:</p>
+<span>VA Boston -- West Roxbury</span>
+
+</div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+</div>
+
+<div>
+<div class="other">
+<p>Content not used in snippet generation:</p>
+<span>Veterans Affairs Emergency Mental Health</span>
+
+<span>
+
+</span>
+<span class="other">
+</span>
+
+<span>
+
+</span>
+<span class="other">
+</span>
+
+<span>Veterans Affairs Emergency Mental Health</span>
+
+<span>Psychiatric Emergency Services</span>
+
+</div>
+</div>
+
+<div>
+<div class="other">
+<p>Content not used in snippet generation:</p>
+<span>Spanish</span>
+<span>es</span>
+<span>Spanish</span>
+
+</div>
+</div>
+
+</div>
+</div>
+  </div>
+
+  <div class="grid-container">
+  <div ng-show="result" class="grid-item">
+    <h2>RDFa output</h2>
+    <p ng-show="!result.rdfa" class="ng-hide">No RDFa fund.</p>
+    <div ng-bind-html="result.rdfa" class="ng-binding">&lt;?xml version='1.0' encoding='utf-8' ?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html prefix='rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns# rdfs: http://www.w3.org/2000/01/rdf-schema# schema: http://schema.org/' xmlns='http://www.w3.org/1999/xhtml'&gt;
+&lt;head&gt;
+&lt;base href='http://example.org/' /&gt;
+&lt;title&gt;Veterans Affairs Emergency Mental Health&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div resource='schema:AdministrativeArea' typeof='rdfs:Class'&gt;
+&lt;span class='type'&gt;rdfs:Class&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div resource='schema:Audience' typeof='rdfs:Class'&gt;
+&lt;span class='type'&gt;rdfs:Class&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div resource='schema:GovernmentOrganization' typeof='rdfs:Class'&gt;
+&lt;span class='type'&gt;rdfs:Class&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div resource='schema:GovernmentService' typeof='rdfs:Class'&gt;
+&lt;span class='type'&gt;rdfs:Class&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div resource='schema:Hospital' typeof='rdfs:Class'&gt;
+&lt;span class='type'&gt;rdfs:Class&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div resource='schema:Language' typeof='rdfs:Class'&gt;
+&lt;span class='type'&gt;rdfs:Class&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div resource='schema:PostalAddress' typeof='rdfs:Class'&gt;
+&lt;span class='type'&gt;rdfs:Class&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div resource='schema:ServiceChannel' typeof='rdfs:Class'&gt;
+&lt;span class='type'&gt;rdfs:Class&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div resource='_:b0' typeof='schema:Thing schema:GovernmentService schema:Intangible schema:Service rdfs:Resource'&gt;
+&lt;span class='type'&gt;schema:Thing schema:GovernmentService schema:Intangible schema:Service rdfs:Resource&lt;/span&gt;
+&lt;h1 property='rdfs:label'&gt;Veterans Affairs Emergency Mental Health&lt;/h1&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:areaServed
+&lt;/span&gt;
+&lt;div rel='schema:areaServed' resource='_:b2' typeof='schema:Place schema:Thing schema:AdministrativeArea rdfs:Resource'&gt;
+&lt;span class='type'&gt;schema:Place schema:Thing schema:AdministrativeArea rdfs:Resource&lt;/span&gt;
+&lt;h1 property='rdfs:label'&gt;Massachusetts&lt;/h1&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:name
+&lt;/span&gt;
+&lt;span property='schema:name'&gt;Massachusetts&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:audience
+&lt;/span&gt;
+&lt;div rel='schema:audience' resource='_:b3' typeof='schema:Thing schema:Audience schema:Intangible rdfs:Resource'&gt;
+&lt;span class='type'&gt;schema:Thing schema:Audience schema:Intangible rdfs:Resource&lt;/span&gt;
+&lt;h1 property='rdfs:label'&gt;Veterans&lt;/h1&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:name
+&lt;/span&gt;
+&lt;span property='schema:name'&gt;Veterans&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:availableChannel
+&lt;/span&gt;
+&lt;div rel='schema:availableChannel' resource='_:b4' typeof='schema:Thing schema:Intangible schema:ServiceChannel rdfs:Resource'&gt;
+&lt;span class='type'&gt;schema:Thing schema:Intangible schema:ServiceChannel rdfs:Resource&lt;/span&gt;
+&lt;h1 property='rdfs:label'&gt;Urgent Care Clinic&lt;/h1&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:availableLanguage
+&lt;/span&gt;
+&lt;div rel='schema:availableLanguage' resource='_:b5' typeof='schema:Language schema:Thing schema:Intangible rdfs:Resource'&gt;
+&lt;span class='type'&gt;schema:Language schema:Thing schema:Intangible rdfs:Resource&lt;/span&gt;
+&lt;h1 property='rdfs:label'&gt;Spanish&lt;/h1&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:alternateName
+&lt;/span&gt;
+&lt;span property='schema:alternateName'&gt;es&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:name
+&lt;/span&gt;
+&lt;span property='schema:name'&gt;Spanish&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:name
+&lt;/span&gt;
+&lt;span property='schema:name'&gt;Urgent Care Clinic&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:serviceLocation
+&lt;/span&gt;
+&lt;div rel='schema:serviceLocation' resource='_:b6' typeof='schema:MedicalOrganization schema:Place schema:LocalBusiness schema:Thing schema:EmergencyService schema:Hospital schema:Organization rdfs:Resource schema:CivicStructure'&gt;
+&lt;span class='type'&gt;schema:MedicalOrganization schema:Place schema:LocalBusiness schema:Thing schema:EmergencyService schema:Hospital schema:Organization rdfs:Resource schema:CivicStructure&lt;/span&gt;
+&lt;h1 property='rdfs:label'&gt;VA Boston -- West Roxbury&lt;/h1&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:address
+&lt;/span&gt;
+&lt;div rel='schema:address' resource='_:b7' typeof='schema:StructuredValue schema:PostalAddress schema:ContactPoint schema:Thing schema:Intangible rdfs:Resource'&gt;
+&lt;span class='type'&gt;schema:StructuredValue schema:PostalAddress schema:ContactPoint schema:Thing schema:Intangible rdfs:Resource&lt;/span&gt;
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:addressLocality
+&lt;/span&gt;
+&lt;span property='schema:addressLocality'&gt;West Roxbury&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:addressRegion
+&lt;/span&gt;
+&lt;span property='schema:addressRegion'&gt;MA&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:postalCode
+&lt;/span&gt;
+&lt;span property='schema:postalCode'&gt;02132&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:streetAddress
+&lt;/span&gt;
+&lt;span property='schema:streetAddress'&gt;1400 VFW Parkway&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:name
+&lt;/span&gt;
+&lt;span property='schema:name'&gt;VA Boston -- West Roxbury&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:name
+&lt;/span&gt;
+&lt;span property='schema:name'&gt;Veterans Affairs Emergency Mental Health&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:serviceOperator
+&lt;/span&gt;
+&lt;div rel='schema:serviceOperator' resource='_:b1' typeof='schema:GovernmentOrganization schema:Thing schema:Organization rdfs:Resource'&gt;
+&lt;span class='type'&gt;schema:GovernmentOrganization schema:Thing schema:Organization rdfs:Resource&lt;/span&gt;
+&lt;h1 property='rdfs:label'&gt;US Department of Veterans Affairs&lt;/h1&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:name
+&lt;/span&gt;
+&lt;span property='schema:name'&gt;US Department of Veterans Affairs&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class='property'&gt;
+&lt;span class='label'&gt;
+schema:serviceType
+&lt;/span&gt;
+&lt;span property='schema:serviceType'&gt;Psychiatric Emergency Services&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div>
+  </div>
+
+ <div ng-show="result" class="grid-item">
+    <h2>ttl output</h2>
+    <p ng-show="!result.ttl" class="ng-hide">No ttl found.</p>
+    <div ng-bind-html="result.ttl" class="ng-binding">@base &lt;http://example.org/&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix schema: &lt;http://schema.org/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+schema:AdministrativeArea a rdfs:Class .
+
+schema:Audience a rdfs:Class .
+
+schema:GovernmentOrganization a rdfs:Class .
+
+schema:GovernmentService a rdfs:Class .
+
+schema:Hospital a rdfs:Class .
+
+schema:Language a rdfs:Class .
+
+schema:PostalAddress a rdfs:Class .
+
+schema:ServiceChannel a rdfs:Class .
+
+ [
+    a schema:Thing,
+      schema:GovernmentService,
+      schema:Intangible,
+      schema:Service,
+      rdfs:Resource;
+    rdfs:label "Veterans Affairs Emergency Mental Health";
+    schema:areaServed [
+      a schema:Place,
+        schema:Thing,
+        schema:AdministrativeArea,
+        rdfs:Resource;
+      rdfs:label "Massachusetts";
+      schema:name "Massachusetts"
+    ];
+    schema:audience [
+      a schema:Thing,
+        schema:Audience,
+        schema:Intangible,
+        rdfs:Resource;
+      rdfs:label "Veterans";
+      schema:name "Veterans"
+    ];
+    schema:availableChannel [
+      a schema:Thing,
+        schema:Intangible,
+        schema:ServiceChannel,
+        rdfs:Resource;
+      rdfs:label "Urgent Care Clinic";
+      schema:availableLanguage [
+        a schema:Language,
+          schema:Thing,
+          schema:Intangible,
+          rdfs:Resource;
+        rdfs:label "Spanish";
+        schema:alternateName "es";
+        schema:name "Spanish"
+      ];
+      schema:name "Urgent Care Clinic";
+      schema:serviceLocation [
+        a schema:MedicalOrganization,
+          schema:Place,
+          schema:LocalBusiness,
+          schema:Thing,
+          schema:EmergencyService,
+          schema:Hospital,
+          schema:Organization,
+          rdfs:Resource,
+          schema:CivicStructure;
+        rdfs:label "VA Boston -- West Roxbury";
+        schema:address [
+          a schema:StructuredValue,
+            schema:PostalAddress,
+            schema:ContactPoint,
+            schema:Thing,
+            schema:Intangible,
+            rdfs:Resource;
+          schema:addressLocality "West Roxbury";
+          schema:addressRegion "MA";
+          schema:postalCode "02132";
+          schema:streetAddress "1400 VFW Parkway"
+        ];
+        schema:name "VA Boston -- West Roxbury"
+      ]
+    ];
+    schema:name "Veterans Affairs Emergency Mental Health";
+    schema:serviceOperator [
+      a schema:GovernmentOrganization,
+        schema:Thing,
+        schema:Organization,
+        rdfs:Resource;
+      rdfs:label "US Department of Veterans Affairs";
+      schema:name "US Department of Veterans Affairs"
+    ];
+    schema:serviceType "Psychiatric Emergency Services"
+  ] .
+</div>
+ </div>
+
+ <div ng-show="result" class="grid-item">
+     <h2>RDF output</h2>
+     <p ng-show="!result.rdf" class="ng-hide">No RDF found.</p>
+     <div ng-bind-html="result.rdf" class="ng-binding">&lt;?xml version='1.0' encoding='utf-8' ?&gt;
+&lt;rdf:RDF xml:base='http://example.org/' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#' xmlns:schema='http://schema.org/' xmlns:xml='http://www.w3.org/XML/1998/namespace'&gt;
+&lt;rdfs:Class rdf:about='http://schema.org/AdministrativeArea'&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class rdf:about='http://schema.org/Audience'&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class rdf:about='http://schema.org/GovernmentOrganization'&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class rdf:about='http://schema.org/GovernmentService'&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class rdf:about='http://schema.org/Hospital'&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class rdf:about='http://schema.org/Language'&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class rdf:about='http://schema.org/PostalAddress'&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class rdf:about='http://schema.org/ServiceChannel'&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;schema:Thing&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/GovernmentService'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Intangible'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Service'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://www.w3.org/2000/01/rdf-schema#Resource'&gt;&lt;/rdf:type&gt;
+&lt;rdfs:label&gt;Veterans Affairs Emergency Mental Health&lt;/rdfs:label&gt;
+
+&lt;schema:areaServed&gt;
+&lt;schema:Place rdf:nodeID='b2'&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Thing'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/AdministrativeArea'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://www.w3.org/2000/01/rdf-schema#Resource'&gt;&lt;/rdf:type&gt;
+&lt;rdfs:label&gt;Massachusetts&lt;/rdfs:label&gt;
+
+&lt;schema:name&gt;Massachusetts&lt;/schema:name&gt;
+
+&lt;/schema:Place&gt;
+
+&lt;/schema:areaServed&gt;
+
+&lt;schema:audience&gt;
+&lt;schema:Thing rdf:nodeID='b3'&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Audience'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Intangible'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://www.w3.org/2000/01/rdf-schema#Resource'&gt;&lt;/rdf:type&gt;
+&lt;rdfs:label&gt;Veterans&lt;/rdfs:label&gt;
+
+&lt;schema:name&gt;Veterans&lt;/schema:name&gt;
+
+&lt;/schema:Thing&gt;
+
+&lt;/schema:audience&gt;
+
+&lt;schema:availableChannel&gt;
+&lt;schema:Thing rdf:nodeID='b4'&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Intangible'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/ServiceChannel'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://www.w3.org/2000/01/rdf-schema#Resource'&gt;&lt;/rdf:type&gt;
+&lt;rdfs:label&gt;Urgent Care Clinic&lt;/rdfs:label&gt;
+
+&lt;schema:availableLanguage&gt;
+&lt;schema:Language rdf:nodeID='b5'&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Thing'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Intangible'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://www.w3.org/2000/01/rdf-schema#Resource'&gt;&lt;/rdf:type&gt;
+&lt;rdfs:label&gt;Spanish&lt;/rdfs:label&gt;
+
+&lt;schema:alternateName&gt;es&lt;/schema:alternateName&gt;
+
+&lt;schema:name&gt;Spanish&lt;/schema:name&gt;
+
+&lt;/schema:Language&gt;
+
+&lt;/schema:availableLanguage&gt;
+
+&lt;schema:name&gt;Urgent Care Clinic&lt;/schema:name&gt;
+
+&lt;schema:serviceLocation&gt;
+&lt;schema:MedicalOrganization rdf:nodeID='b6'&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Place'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/LocalBusiness'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Thing'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/EmergencyService'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Hospital'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Organization'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://www.w3.org/2000/01/rdf-schema#Resource'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/CivicStructure'&gt;&lt;/rdf:type&gt;
+&lt;rdfs:label&gt;VA Boston -- West Roxbury&lt;/rdfs:label&gt;
+
+&lt;schema:address&gt;
+&lt;schema:StructuredValue rdf:nodeID='b7'&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/PostalAddress'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/ContactPoint'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Thing'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Intangible'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://www.w3.org/2000/01/rdf-schema#Resource'&gt;&lt;/rdf:type&gt;
+&lt;schema:addressLocality&gt;West Roxbury&lt;/schema:addressLocality&gt;
+
+&lt;schema:addressRegion&gt;MA&lt;/schema:addressRegion&gt;
+
+&lt;schema:postalCode&gt;02132&lt;/schema:postalCode&gt;
+
+&lt;schema:streetAddress&gt;1400 VFW Parkway&lt;/schema:streetAddress&gt;
+
+&lt;/schema:StructuredValue&gt;
+
+&lt;/schema:address&gt;
+
+&lt;schema:name&gt;VA Boston -- West Roxbury&lt;/schema:name&gt;
+
+&lt;/schema:MedicalOrganization&gt;
+
+&lt;/schema:serviceLocation&gt;
+
+&lt;/schema:Thing&gt;
+
+&lt;/schema:availableChannel&gt;
+
+&lt;schema:name&gt;Veterans Affairs Emergency Mental Health&lt;/schema:name&gt;
+
+&lt;schema:serviceOperator&gt;
+&lt;schema:GovernmentOrganization rdf:nodeID='b1'&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Thing'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://schema.org/Organization'&gt;&lt;/rdf:type&gt;
+  &lt;rdf:type rdf:resource='http://www.w3.org/2000/01/rdf-schema#Resource'&gt;&lt;/rdf:type&gt;
+&lt;rdfs:label&gt;US Department of Veterans Affairs&lt;/rdfs:label&gt;
+
+&lt;schema:name&gt;US Department of Veterans Affairs&lt;/schema:name&gt;
+
+&lt;/schema:GovernmentOrganization&gt;
+
+&lt;/schema:serviceOperator&gt;
+
+&lt;schema:serviceType&gt;Psychiatric Emergency Services&lt;/schema:serviceType&gt;
+
+&lt;/schema:Thing&gt;
+
+&lt;/rdf:RDF&gt;
+</div>
+  </div>
+
+  <div ng-show="result" class="grid-item">
+     <h2>JSON+LD output</h2>
+    <p ng-show="!result.jsonld" class="ng-hide">No json ld found.</p>
+    <div ng-bind-html="result.jsonld" class="ng-binding">{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/"
+  },
+  "@graph": [
+    {
+      "@id": "schema:Language",
+      "@type": "rdfs:Class"
+    },
+    {
+      "@id": "_:b7",
+      "schema:addressLocality": "West Roxbury",
+      "schema:streetAddress": "1400 VFW Parkway",
+      "@type": [
+        "schema:StructuredValue",
+        "schema:PostalAddress",
+        "schema:ContactPoint",
+        "schema:Thing",
+        "schema:Intangible",
+        "rdfs:Resource"
+      ],
+      "schema:addressRegion": "MA",
+      "schema:postalCode": "02132"
+    },
+    {
+      "@id": "schema:PostalAddress",
+      "@type": "rdfs:Class"
+    },
+    {
+      "@id": "_:b0",
+      "schema:areaServed": {
+        "@id": "_:b2"
+      },
+      "schema:serviceOperator": {
+        "@id": "_:b1"
+      },
+      "schema:name": "Veterans Affairs Emergency Mental Health",
+      "schema:availableChannel": {
+        "@id": "_:b4"
+      },
+      "@type": [
+        "schema:Thing",
+        "schema:GovernmentService",
+        "schema:Intangible",
+        "schema:Service",
+        "rdfs:Resource"
+      ],
+      "schema:serviceType": "Psychiatric Emergency Services",
+      "schema:audience": {
+        "@id": "_:b3"
+      },
+      "rdfs:label": "Veterans Affairs Emergency Mental Health"
+    },
+    {
+      "@id": "_:b2",
+      "schema:name": "Massachusetts",
+      "@type": [
+        "schema:Place",
+        "schema:Thing",
+        "schema:AdministrativeArea",
+        "rdfs:Resource"
+      ],
+      "rdfs:label": "Massachusetts"
+    },
+    {
+      "@id": "_:b1",
+      "schema:name": "US Department of Veterans Affairs",
+      "@type": [
+        "schema:GovernmentOrganization",
+        "schema:Thing",
+        "schema:Organization",
+        "rdfs:Resource"
+      ],
+      "rdfs:label": "US Department of Veterans Affairs"
+    },
+    {
+      "@id": "_:b4",
+      "schema:availableLanguage": {
+        "@id": "_:b5"
+      },
+      "schema:name": "Urgent Care Clinic",
+      "@type": [
+        "schema:Thing",
+        "schema:Intangible",
+        "schema:ServiceChannel",
+        "rdfs:Resource"
+      ],
+      "schema:serviceLocation": {
+        "@id": "_:b6"
+      },
+      "rdfs:label": "Urgent Care Clinic"
+    },
+    {
+      "@id": "schema:GovernmentService",
+      "@type": "rdfs:Class"
+    },
+    {
+      "@id": "_:b3",
+      "schema:name": "Veterans",
+      "@type": [
+        "schema:Thing",
+        "schema:Audience",
+        "schema:Intangible",
+        "rdfs:Resource"
+      ],
+      "rdfs:label": "Veterans"
+    },
+    {
+      "@id": "schema:AdministrativeArea",
+      "@type": "rdfs:Class"
+    },
+    {
+      "@id": "schema:Audience",
+      "@type": "rdfs:Class"
+    },
+    {
+      "@id": "_:b5",
+      "schema:alternateName": "es",
+      "schema:name": "Spanish",
+      "@type": [
+        "schema:Language",
+        "schema:Thing",
+        "schema:Intangible",
+        "rdfs:Resource"
+      ],
+      "rdfs:label": "Spanish"
+    },
+    {
+      "@id": "schema:ServiceChannel",
+      "@type": "rdfs:Class"
+    },
+    {
+      "@id": "_:b6",
+      "schema:name": "VA Boston -- West Roxbury",
+      "schema:address": {
+        "@id": "_:b7"
+      },
+      "@type": [
+        "schema:MedicalOrganization",
+        "schema:Place",
+        "schema:LocalBusiness",
+        "schema:Thing",
+        "schema:EmergencyService",
+        "schema:Hospital",
+        "schema:Organization",
+        "rdfs:Resource",
+        "schema:CivicStructure"
+      ],
+      "rdfs:label": "VA Boston -- West Roxbury"
+    },
+    {
+      "@id": "schema:Hospital",
+      "@type": "rdfs:Class"
+    },
+    {
+      "@id": "schema:GovernmentOrganization",
+      "@type": "rdfs:Class"
+    }
+  ]
+}</div>
+  </div>
+
+  <div ng-show="result" class="grid-item">
+    <h2>Graph:</h2>
+    <p ng-show="!result.graph" class="ng-hide"> No Graph Found. </p>
+    <div ng-bind-html="result.graph" class="ng-binding"><img src="./Structured Data Linter_files/graphsvg.svg" alt="svg"></div>
+  </div>
+
+  <div ng-show="result" class="grid-item">
+    <h2>Raw structured data extracted from the page:</h2>
+    <p ng-show="!result.html" class="ng-hide">No structured data detected.</p>
+    <div ng-bind-html="result.html" class="ng-binding"><div class="extracted-content">
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">@id</td>
+<td>http://schema.org/AdministrativeArea(1)</td>
+</tr>
+<tr>
+<td class="label">rdf:type</td>
+<td>rdfs:Class</td>
+</tr>
+</tbody></table>
+</div>
+
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">@id</td>
+<td>http://schema.org/Audience(1)</td>
+</tr>
+<tr>
+<td class="label">rdf:type</td>
+<td>rdfs:Class</td>
+</tr>
+</tbody></table>
+</div>
+
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">@id</td>
+<td>http://schema.org/GovernmentOrganization(1)</td>
+</tr>
+<tr>
+<td class="label">rdf:type</td>
+<td>rdfs:Class</td>
+</tr>
+</tbody></table>
+</div>
+
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">@id</td>
+<td>http://schema.org/GovernmentService(1)</td>
+</tr>
+<tr>
+<td class="label">rdf:type</td>
+<td>rdfs:Class</td>
+</tr>
+</tbody></table>
+</div>
+
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">@id</td>
+<td>http://schema.org/Hospital(1)</td>
+</tr>
+<tr>
+<td class="label">rdf:type</td>
+<td>rdfs:Class</td>
+</tr>
+</tbody></table>
+</div>
+
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">@id</td>
+<td>http://schema.org/Language(1)</td>
+</tr>
+<tr>
+<td class="label">rdf:type</td>
+<td>rdfs:Class</td>
+</tr>
+</tbody></table>
+</div>
+
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">@id</td>
+<td>http://schema.org/PostalAddress(1)</td>
+</tr>
+<tr>
+<td class="label">rdf:type</td>
+<td>rdfs:Class</td>
+</tr>
+</tbody></table>
+</div>
+
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">@id</td>
+<td>http://schema.org/ServiceChannel(1)</td>
+</tr>
+<tr>
+<td class="label">rdf:type</td>
+<td>rdfs:Class</td>
+</tr>
+</tbody></table>
+</div>
+
+<div>
+<table class="properties">
+<tbody><tr>
+<td class="label">rdf:type</td>
+<td>schema:Thing schema:GovernmentService schema:Intangible schema:Service rdfs:Resource</td>
+</tr>
+<tr class="property">
+<td class="label">
+rdfs:label
+</td>
+<td>Veterans Affairs Emergency Mental Health</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:areaServed
+</td>
+<td><div>
+<table class="properties">
+<tbody><tr>
+<td class="label">rdf:type</td>
+<td>schema:Place schema:Thing schema:AdministrativeArea rdfs:Resource</td>
+</tr>
+<tr class="property">
+<td class="label">
+rdfs:label
+</td>
+<td>Massachusetts</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:name
+</td>
+<td>Massachusetts</td>
+</tr>
+
+</tbody></table>
+</div>
+</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:audience
+</td>
+<td><div>
+<table class="properties">
+<tbody><tr>
+<td class="label">rdf:type</td>
+<td>schema:Thing schema:Audience schema:Intangible rdfs:Resource</td>
+</tr>
+<tr class="property">
+<td class="label">
+rdfs:label
+</td>
+<td>Veterans</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:name
+</td>
+<td>Veterans</td>
+</tr>
+
+</tbody></table>
+</div>
+</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:availableChannel
+</td>
+<td><div>
+<table class="properties">
+<tbody><tr>
+<td class="label">rdf:type</td>
+<td>schema:Thing schema:Intangible schema:ServiceChannel rdfs:Resource</td>
+</tr>
+<tr class="property">
+<td class="label">
+rdfs:label
+</td>
+<td>Urgent Care Clinic</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:availableLanguage
+</td>
+<td><div>
+<table class="properties">
+<tbody><tr>
+<td class="label">rdf:type</td>
+<td>schema:Language schema:Thing schema:Intangible rdfs:Resource</td>
+</tr>
+<tr class="property">
+<td class="label">
+rdfs:label
+</td>
+<td>Spanish</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:alternateName
+</td>
+<td>es</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:name
+</td>
+<td>Spanish</td>
+</tr>
+
+</tbody></table>
+</div>
+</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:name
+</td>
+<td>Urgent Care Clinic</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:serviceLocation
+</td>
+<td><div>
+<table class="properties">
+<tbody><tr>
+<td class="label">rdf:type</td>
+<td>schema:MedicalOrganization schema:Place schema:LocalBusiness schema:Thing schema:EmergencyService schema:Hospital schema:Organization rdfs:Resource schema:CivicStructure</td>
+</tr>
+<tr class="property">
+<td class="label">
+rdfs:label
+</td>
+<td>VA Boston -- West Roxbury</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:address
+</td>
+<td><div>
+<table class="properties">
+<tbody><tr>
+<td class="label">rdf:type</td>
+<td>schema:StructuredValue schema:PostalAddress schema:ContactPoint schema:Thing schema:Intangible rdfs:Resource</td>
+</tr>
+<tr class="property">
+<td class="label">
+schema:addressLocality
+</td>
+<td>West Roxbury</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:addressRegion
+</td>
+<td>MA</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:postalCode
+</td>
+<td>02132</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:streetAddress
+</td>
+<td>1400 VFW Parkway</td>
+</tr>
+
+</tbody></table>
+</div>
+</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:name
+</td>
+<td>VA Boston -- West Roxbury</td>
+</tr>
+
+</tbody></table>
+</div>
+</td>
+</tr>
+
+</tbody></table>
+</div>
+</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:name
+</td>
+<td>Veterans Affairs Emergency Mental Health</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:serviceOperator
+</td>
+<td><div>
+<table class="properties">
+<tbody><tr>
+<td class="label">rdf:type</td>
+<td>schema:GovernmentOrganization schema:Thing schema:Organization rdfs:Resource</td>
+</tr>
+<tr class="property">
+<td class="label">
+rdfs:label
+</td>
+<td>US Department of Veterans Affairs</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:name
+</td>
+<td>US Department of Veterans Affairs</td>
+</tr>
+
+</tbody></table>
+</div>
+</td>
+</tr>
+
+<tr class="property">
+<td class="label">
+schema:serviceType
+</td>
+<td>Psychiatric Emergency Services</td>
+</tr>
+
+</tbody></table>
+</div>
+
+</div>
+</div>
+  </div>
+
+  <div ng-show="result.statistics" class="grid-item">
+    <h2>Parser statistics</h2>
+    <table class="stats table table-condensed">
+      <tbody>
+        <tr><td>Reader</td><td class="ng-binding">RDF::RDFa::Reader</td></tr>
+        <tr><td>Statements</td><td class="ng-binding">75</td></tr>
+        <tr>
+          <td>Templates</td>
+          <td><!-- ngRepeat: template in result.statistics.templates --><div ng-repeat="template in result.statistics.templates" class="ng-binding ng-scope">schema:Organization</div><!-- end ngRepeat: template in result.statistics.templates --><div ng-repeat="template in result.statistics.templates" class="ng-binding ng-scope">schema:Place</div><!-- end ngRepeat: template in result.statistics.templates --><div ng-repeat="template in result.statistics.templates" class="ng-binding ng-scope">schema:PostalAddress</div><!-- end ngRepeat: template in result.statistics.templates --></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div ng-show="result.messages" class="grid-item">
+    <h2>Linter Messages</h2>
+    <!-- ngRepeat: message in result.messages -->
+  </div>
+
+  <div ng-show="result.debug" class="ng-hide">
+    <h2>Debug Information</h2>
+  <textarea rows="20" cols="120" class="ng-binding">    
+  </textarea>
+  </div>
+</div>
+
+    </div>
+    <footer id="footer">
+      <p class="content">
+       Website content released under a <a rel="cc:license license schema:license" href="http://creativecommons.org/licenses/by-sa/3.0/">
+       Creative Commons Attribution Share-Alike license</a> except where an
+       alternate is specified.
+       </p>
+    </footer>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-57473808-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  
+
+</div></body></html>
